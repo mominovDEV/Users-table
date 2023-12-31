@@ -1,55 +1,10 @@
 <template>
   <div class="p-20">
     <div class="flex items-center justify-between mb-5">
-      <div
-        class="absolute z-50 left-0 w-full h-screen bg-black/50 flex items-center justify-center duration-300"
-        :class="!modal ? 'opacity-0 -top-full' : 'top-0 opacity-100'"
-      >
-        <div class="rounded bg-white w-[470px] p-5">
-          <div>
-            <div class="flex items-center justify-between mb-5">
-              <span class="font-bold text-xl text-gray-700">Are you sure?</span>
-              <i
-                @click="changeModal"
-                class="bx bx-x text-4xl text-gray-500 cursor-pointer"
-              ></i>
-            </div>
-            <div class="mt-2">
-              <input
-                v-model="firstName"
-                type="text"
-                autocomplete="off"
-                placeholder="First Name"
-                required
-              />
-              <input
-                v-model="lastName"
-                type="text"
-                autocomplete="off"
-                placeholder="Last Name"
-                required
-              />
-              <input
-                v-model="phone"
-                type="number"
-                autocomplete="off"
-                placeholder="Phone Number"
-                required
-              />
-            </div>
-          </div>
-          <div class="text-end">
-            <button
-              @click="addUser"
-              class="bg-green-500 text-white p-2.5 px-4 rounded text-sm"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </div>
+      <AddModal ref="add_modal"></AddModal>
+      <DeleteModal ref="delete_modal"></DeleteModal>
       <button
-        @click="changeModal"
+        @click="openAddModal()"
         class="flex items-center gap-2 bg-teal-700 rounded px-5 p-2 text-white"
       >
         <i class="bx bx-plus"></i>
@@ -81,20 +36,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in store.users" :key="user.id">
             <td class="px-5 py-3">{{ user.id }}</td>
             <td class="px-5 py-3">{{ user.first_name }}</td>
             <td class="px-5 py-3">{{ user.last_name }}</td>
             <td class="px-5 py-3">{{ user.phone }}</td>
             <td class="px-5 py-4 whitespace-nowrap">
               <div class="flex gap-2">
-                <router-link to="/user">
-                  <ViewButton />
-                </router-link>
-                <router-link to="/user-add">
-                  <EditButton />
-                </router-link>
-                <DeleteButton />
+                <ViewButton @click="$router.push(`/users/${user.id}`)" />
+                <EditButton @click="openAddModal(user)" />
+                <DeleteButton @click="openDeleteModal(user.id)"></DeleteButton>
               </div>
             </td>
           </tr>
@@ -104,68 +55,30 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { ref, reactive, onMounted } from "vue";
 import ViewButton from "../components/Buttons/ViewButton.vue";
 import DeleteButton from "../components/Buttons/DeleteButton.vue";
 import EditButton from "../components/Buttons/EditButton.vue";
-// add
 import AddModal from "../components/AddModal.vue";
-const modal = ref(false);
-const changeModal = () => (modal.value = !modal.value);
-const users = ref([]);
-const baseURL = "http://127.0.0.1:3000/users";
-// const addUser = ()=>{
-//     const res = await axios.post(baseURL, { first_name: this.FirstName });
+import DeleteModal from "../components/DeleteModal.vue";
+import { userStore } from "../stores/users";
 
-//     this.users = [...this.users, res.data];
+const store = userStore();
 
-//     this.FirstName = "",
-// }
+const add_modal = ref();
+const delete_modal = ref();
 
-// const addUser = () => {
-//   const userData = { first_name: firstName.value, last_name: lastName.value, phone: phone.value };
-//   users.value = [...users.value, userData];
-//   changeModal();
-// };
-
-const addUser = async () => {
-  try {
-    const userData = {
-      first_name: firstName.value,
-      last_name: lastName.value,
-      phone: phone.value
-    };
-
-    const res = await axios.post(baseURL, userData);
-
-    users.value = [...users.value, res.data];
-
-    firstName.value = '';
-    lastName.value = '';
-    phone.value = '';
-
-    changeModal();
-  } catch (error) {
-    console.error(error);
-  }
-};
-// add
-
-const fetchData = async () => {
-  try {
-    const res = await axios.get(baseURL);
-    users.value = res.data;
-  } catch (e) {
-    console.error(e);
-  }
+const openAddModal = (user) => {
+  add_modal.value.openModal(user);
 };
 
-onMounted(() => {
-  fetchData();
+const openDeleteModal = (id) => {
+  delete_modal.value.openModal(id);
+};
+
+onMounted(async () => {
+  await store.getUsers();
 });
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>

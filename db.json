@@ -1,11 +1,40 @@
 {
-    "users": [
-      { "id": 0, "first_name": "Umedjon","last_name":"Ishmuhammedov","phone":"+998993603500" },
-      { "id": 1, "first_name": "MuhammadAli","last_name":"Eshonqulov","phone":"+998353603300" },
-      { "id": 2, "first_name": "Abdukarim","last_name":"Mirzayev","phone":"+998993606500" },
-      { "id": 3, "first_name": "Ikrom","last_name":"Valiyev","phone":"+998993605520" },
-      { "id": 4, "first_name": "Yusuf","last_name":"Tursunboyev","phone":"+998993503500" },
-      { "id": 5, "first_name": "Sardor","last_name":"Arziqulov","phone":"+998993603300" }
-    ]
-  }
-  
+  "users": [
+    {
+      "first_name": "Umedjon",
+      "last_name": "Ishmuhammedov",
+      "phone": "+998993603501",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "first_name": "MuhammadAli",
+      "last_name": "Eshonqulov",
+      "phone": "+998353603300"
+    },
+    {
+      "id": 3,
+      "first_name": "Abdukarim",
+      "last_name": "Mirzayev",
+      "phone": "+998993606500"
+    },
+    {
+      "id": 4,
+      "first_name": "Ikrom",
+      "last_name": "Valiyev",
+      "phone": "+998993605520"
+    },
+    {
+      "id": 6,
+      "first_name": "Sardor",
+      "last_name": "Arziqulov",
+      "phone": "+998993603300"
+    },
+    {
+      "first_name": "mardon",
+      "last_name": "mo'minov",
+      "phone": "+998901234567",
+      "id": 7
+    }
+  ]
+}
